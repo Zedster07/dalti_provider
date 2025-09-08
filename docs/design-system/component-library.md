@@ -5,6 +5,7 @@
 ### 1. Button Components
 
 #### Primary Button
+
 ```typescript
 interface PrimaryButtonProps {
   title: string;
@@ -19,6 +20,7 @@ interface PrimaryButtonProps {
 ```
 
 **Design Specifications**:
+
 - Background: `--color-primary` (#15424E)
 - Text Color: `--color-text-on-primary` (#FFFFFF)
 - Border Radius: `--border-radius-button` (8px)
@@ -28,6 +30,7 @@ interface PrimaryButtonProps {
 - Min Height: 48px
 
 #### Secondary Button (Outlined)
+
 ```typescript
 interface SecondaryButtonProps extends PrimaryButtonProps {
   variant: 'outlined';
@@ -35,12 +38,14 @@ interface SecondaryButtonProps extends PrimaryButtonProps {
 ```
 
 **Design Specifications**:
+
 - Background: Transparent
 - Border: 1.5px solid `--color-primary`
 - Text Color: `--color-primary`
 - Same dimensions as primary button
 
 #### Text Button
+
 ```typescript
 interface TextButtonProps extends Omit<PrimaryButtonProps, 'fullWidth'> {
   variant: 'text';
@@ -48,6 +53,7 @@ interface TextButtonProps extends Omit<PrimaryButtonProps, 'fullWidth'> {
 ```
 
 **Design Specifications**:
+
 - Background: Transparent
 - Text Color: `--color-primary`
 - Padding: 16px horizontal, 8px vertical
@@ -56,6 +62,7 @@ interface TextButtonProps extends Omit<PrimaryButtonProps, 'fullWidth'> {
 ### 2. Input Components
 
 #### Text Input
+
 ```typescript
 interface TextInputProps {
   label: string;
@@ -75,6 +82,7 @@ interface TextInputProps {
 ```
 
 **Design Specifications**:
+
 - Background: `--color-surface` (#FAFAFA)
 - Border: 1px solid `--color-text-secondary` with 30% opacity
 - Border Radius: `--border-radius-input` (8px)
@@ -85,6 +93,7 @@ interface TextInputProps {
 - Error Text: Changa, 12px, weight 400, `--color-error`
 
 #### Dropdown/Select
+
 ```typescript
 interface DropdownProps<T> {
   label: string;
@@ -108,6 +117,7 @@ interface DropdownOption<T> {
 ### 3. Card Components
 
 #### Basic Card
+
 ```typescript
 interface CardProps {
   children: React.ReactNode;
@@ -119,6 +129,7 @@ interface CardProps {
 ```
 
 **Design Specifications**:
+
 - Background: `--color-background` (#FFFFFF)
 - Border Radius: `--border-radius-card` (8px)
 - Shadow: `--shadow-card`
@@ -126,6 +137,7 @@ interface CardProps {
 - Margin: 4px horizontal, 4px vertical
 
 #### Stats Card
+
 ```typescript
 interface StatsCardProps {
   title: string;
@@ -143,6 +155,7 @@ interface StatsCardProps {
 ### 4. Navigation Components
 
 #### Icon Container
+
 ```typescript
 interface IconContainerProps {
   icon: IconName;
@@ -157,11 +170,13 @@ interface IconContainerProps {
 ```
 
 **Size Specifications**:
+
 - Header: 36x36px container, 18px icon, 8px border radius
 - Settings: 40x40px container, 20px icon, 8px border radius
 - Large: 48x48px container, 24px icon, 12px border radius
 
 #### Bottom Tab Bar
+
 ```typescript
 interface TabBarProps {
   routes: TabRoute[];
@@ -180,6 +195,7 @@ interface TabRoute {
 ### 5. List Components
 
 #### List Item
+
 ```typescript
 interface ListItemProps {
   title: string;
@@ -197,6 +213,7 @@ interface ListItemProps {
 ```
 
 **Design Specifications**:
+
 - Min Height: 56px
 - Padding: 16px horizontal, 12px vertical
 - Background: Transparent (selected: primary with 10% opacity)
@@ -207,6 +224,7 @@ interface ListItemProps {
 ### 6. Modal Components
 
 #### Bottom Sheet
+
 ```typescript
 interface BottomSheetProps {
   visible: boolean;
@@ -219,6 +237,7 @@ interface BottomSheetProps {
 ```
 
 #### Dialog
+
 ```typescript
 interface DialogProps {
   visible: boolean;
@@ -239,6 +258,7 @@ interface DialogAction {
 ### 7. Form Components
 
 #### Form Field Wrapper
+
 ```typescript
 interface FormFieldProps {
   label: string;
@@ -250,6 +270,7 @@ interface FormFieldProps {
 ```
 
 #### Checkbox
+
 ```typescript
 interface CheckboxProps {
   checked: boolean;
@@ -260,6 +281,7 @@ interface CheckboxProps {
 ```
 
 #### Radio Button
+
 ```typescript
 interface RadioButtonProps {
   selected: boolean;
@@ -272,6 +294,7 @@ interface RadioButtonProps {
 ### 8. Feedback Components
 
 #### Loading Spinner
+
 ```typescript
 interface LoadingSpinnerProps {
   size?: 'small' | 'medium' | 'large';
@@ -281,6 +304,7 @@ interface LoadingSpinnerProps {
 ```
 
 #### Toast/Snackbar
+
 ```typescript
 interface ToastProps {
   message: string;
@@ -294,6 +318,7 @@ interface ToastProps {
 ```
 
 #### Progress Bar
+
 ```typescript
 interface ProgressBarProps {
   progress: number; // 0-1
@@ -307,6 +332,7 @@ interface ProgressBarProps {
 ### 9. Avatar Components
 
 #### User Avatar
+
 ```typescript
 interface AvatarProps {
   source?: ImageSourcePropType;
@@ -323,6 +349,7 @@ interface AvatarProps {
 ### 10. Calendar Components
 
 #### Calendar Widget
+
 ```typescript
 interface CalendarProps {
   selectedDate?: Date;
@@ -345,6 +372,7 @@ interface CalendarEvent {
 ## 🎨 Component Styling Guidelines
 
 ### Consistent Patterns
+
 1. **Spacing**: Use design tokens for all spacing
 2. **Colors**: Reference color tokens, never hardcode colors
 3. **Typography**: Use typography tokens for consistency
@@ -352,21 +380,25 @@ interface CalendarEvent {
 5. **Border Radius**: Use border radius tokens
 
 ### Accessibility Requirements
+
 1. **Touch Targets**: Minimum 44x44px for interactive elements
 2. **Color Contrast**: WCAG 2.1 AA compliance
 3. **Screen Reader**: Proper accessibility labels
 4. **Focus Indicators**: Clear focus states for keyboard navigation
 
 ### Animation Guidelines
+
 1. **Duration**: Use animation duration tokens
 2. **Easing**: Apply material design easing curves
 3. **Performance**: Optimize for 60 FPS
 4. **Reduced Motion**: Respect user preferences
 
 ### RTL Support
+
 1. **Layout**: Automatic layout mirroring
 2. **Icons**: Directional icon variants
 3. **Text Alignment**: Proper text direction
 4. **Margins/Padding**: Logical properties usage
 
-This component library provides a comprehensive foundation for building consistent, accessible, and maintainable UI components in the React Native application.
+This component library provides a comprehensive foundation for building consistent, accessible, and
+maintainable UI components in the React Native application.

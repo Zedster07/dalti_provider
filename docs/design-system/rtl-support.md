@@ -2,16 +2,20 @@
 
 ## 🌍 Overview
 
-The Dalti Provider application supports Arabic language with full RTL (Right-to-Left) layout support. This document outlines the implementation guidelines for maintaining proper RTL functionality in the React Native version.
+The Dalti Provider application supports Arabic language with full RTL (Right-to-Left) layout
+support. This document outlines the implementation guidelines for maintaining proper RTL
+functionality in the React Native version.
 
 ## 📱 Current RTL Implementation
 
 ### Supported Languages
+
 - **Arabic (ar)** - Primary RTL language
 - **English (en)** - LTR reference language
 - **French (fr)** - LTR secondary language
 
 ### RTL Features in Current App
+
 1. **Automatic Layout Mirroring** - UI elements flip horizontally
 2. **Text Direction** - Proper text alignment and reading direction
 3. **Icon Orientation** - Directional icons flip appropriately
@@ -23,6 +27,7 @@ The Dalti Provider application supports Arabic language with full RTL (Right-to-
 ### 1. RTL Configuration
 
 #### Enable RTL Support
+
 ```typescript
 // App.tsx
 import { I18nManager } from 'react-native';
@@ -37,6 +42,7 @@ const isRTL = I18nManager.isRTL;
 #### Platform-Specific Setup
 
 **Android Configuration** (`android/app/src/main/AndroidManifest.xml`):
+
 ```xml
 <application
   android:supportsRtl="true"
@@ -46,6 +52,7 @@ const isRTL = I18nManager.isRTL;
 ```
 
 **iOS Configuration** (`ios/YourApp/Info.plist`):
+
 ```xml
 <key>CFBundleDevelopmentRegion</key>
 <string>en</string>
@@ -60,6 +67,7 @@ const isRTL = I18nManager.isRTL;
 ### 2. Layout Implementation
 
 #### Logical Properties
+
 Use logical properties instead of physical directions:
 
 ```typescript
@@ -75,14 +83,15 @@ const styles = StyleSheet.create({
 // ✅ Use logical properties
 const styles = StyleSheet.create({
   container: {
-    marginStart: 16,      // Left in LTR, Right in RTL
-    paddingEnd: 20,       // Right in LTR, Left in RTL
-    borderStartWidth: 1,  // Left border in LTR, Right in RTL
+    marginStart: 16, // Left in LTR, Right in RTL
+    paddingEnd: 20, // Right in LTR, Left in RTL
+    borderStartWidth: 1, // Left border in LTR, Right in RTL
   },
 });
 ```
 
 #### Flexbox RTL Handling
+
 ```typescript
 // Flexbox automatically handles RTL
 const styles = StyleSheet.create({
@@ -96,6 +105,7 @@ const styles = StyleSheet.create({
 ### 3. Text Direction
 
 #### Text Alignment
+
 ```typescript
 import { I18nManager } from 'react-native';
 
@@ -108,6 +118,7 @@ const styles = StyleSheet.create({
 ```
 
 #### Input Fields
+
 ```typescript
 const TextInput = ({ value, onChangeText, ...props }) => {
   return (
@@ -124,6 +135,7 @@ const TextInput = ({ value, onChangeText, ...props }) => {
 ### 4. Icon Handling
 
 #### Directional Icons
+
 ```typescript
 interface IconProps {
   name: string;
@@ -133,10 +145,10 @@ interface IconProps {
 }
 
 const Icon = ({ name, flipRTL = false, ...props }: IconProps) => {
-  const iconName = flipRTL && I18nManager.isRTL 
-    ? getFlippedIconName(name) 
+  const iconName = flipRTL && I18nManager.isRTL
+    ? getFlippedIconName(name)
     : name;
-    
+
   return <IconComponent name={iconName} {...props} />;
 };
 
@@ -149,7 +161,7 @@ const getFlippedIconName = (iconName: string): string => {
     'chevron-right': 'chevron-left',
     // Add more directional icons as needed
   };
-  
+
   return iconMap[iconName] || iconName;
 };
 ```
@@ -157,6 +169,7 @@ const getFlippedIconName = (iconName: string): string => {
 ### 5. Navigation RTL Support
 
 #### React Navigation RTL
+
 ```typescript
 import { NavigationContainer } from '@react-navigation/native';
 import { I18nManager } from 'react-native';
@@ -171,10 +184,11 @@ const App = () => {
 ```
 
 #### Custom Navigation Components
+
 ```typescript
 const BackButton = ({ onPress }) => {
   const iconName = I18nManager.isRTL ? 'arrow-right' : 'arrow-left';
-  
+
   return (
     <TouchableOpacity onPress={onPress}>
       <Icon name={iconName} size={24} />
@@ -186,6 +200,7 @@ const BackButton = ({ onPress }) => {
 ### 6. Component RTL Guidelines
 
 #### Card Components
+
 ```typescript
 const Card = ({ children, ...props }) => {
   return (
@@ -209,6 +224,7 @@ const styles = StyleSheet.create({
 ```
 
 #### List Items
+
 ```typescript
 const ListItem = ({ title, subtitle, leftIcon, rightIcon, onPress }) => {
   return (
@@ -218,12 +234,12 @@ const ListItem = ({ title, subtitle, leftIcon, rightIcon, onPress }) => {
           <Icon name={leftIcon} />
         </View>
       )}
-      
+
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
         {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
       </View>
-      
+
       {rightIcon && (
         <View style={styles.rightIcon}>
           <Icon name={rightIcon} flipRTL />
@@ -261,16 +277,19 @@ const styles = StyleSheet.create({
 ## 🎨 Design Considerations
 
 ### 1. Layout Mirroring
+
 - **Automatic**: Most layouts mirror automatically with flexbox
 - **Manual**: Some components may need explicit RTL handling
 - **Testing**: Test all screens in both LTR and RTL modes
 
 ### 2. Typography
+
 - **Font Support**: Ensure Changa font supports Arabic characters
 - **Line Height**: Adjust line height for Arabic text if needed
 - **Text Alignment**: Always use logical alignment
 
 ### 3. Images and Media
+
 - **UI Images**: Mirror interface elements (arrows, etc.)
 - **Content Images**: Don't mirror photos or content images
 - **Icons**: Mirror directional icons, keep symbolic icons unchanged
@@ -278,6 +297,7 @@ const styles = StyleSheet.create({
 ## 🧪 Testing RTL Implementation
 
 ### 1. Development Testing
+
 ```typescript
 // Force RTL for testing
 import { I18nManager } from 'react-native';
@@ -290,6 +310,7 @@ const toggleRTL = () => {
 ```
 
 ### 2. Testing Checklist
+
 - [ ] All text aligns correctly (right-aligned in RTL)
 - [ ] Navigation flows work properly (back button behavior)
 - [ ] Icons flip appropriately (directional icons only)
@@ -299,6 +320,7 @@ const toggleRTL = () => {
 - [ ] Touch targets remain accessible
 
 ### 3. Common RTL Issues
+
 1. **Hardcoded Margins**: Using `marginLeft` instead of `marginStart`
 2. **Text Alignment**: Not setting proper text alignment
 3. **Icon Direction**: Not flipping directional icons
@@ -308,6 +330,7 @@ const toggleRTL = () => {
 ## 📋 RTL Implementation Checklist
 
 ### Core Components
+
 - [ ] Button components support RTL
 - [ ] Input fields align correctly
 - [ ] Cards and containers mirror properly
@@ -315,6 +338,7 @@ const toggleRTL = () => {
 - [ ] List items display correctly
 
 ### Screens
+
 - [ ] Authentication screens
 - [ ] Dashboard layout
 - [ ] Forms and settings
@@ -322,6 +346,7 @@ const toggleRTL = () => {
 - [ ] Profile and business management
 
 ### Features
+
 - [ ] Text input and editing
 - [ ] Navigation and routing
 - [ ] Animations and transitions
@@ -331,6 +356,7 @@ const toggleRTL = () => {
 ## 🔄 Language Switching
 
 ### Dynamic Language Change
+
 ```typescript
 import { I18nManager } from 'react-native';
 import RNRestart from 'react-native-restart';
@@ -338,14 +364,15 @@ import RNRestart from 'react-native-restart';
 const changeLanguage = async (languageCode: string) => {
   // Update language in storage
   await AsyncStorage.setItem('language', languageCode);
-  
+
   // Update RTL setting
   const isRTL = languageCode === 'ar';
   I18nManager.forceRTL(isRTL);
-  
+
   // Restart app to apply RTL changes
   RNRestart.Restart();
 };
 ```
 
-This comprehensive RTL support ensures that Arabic-speaking users have a native, properly-oriented experience that feels natural and intuitive.
+This comprehensive RTL support ensures that Arabic-speaking users have a native, properly-oriented
+experience that feels natural and intuitive.

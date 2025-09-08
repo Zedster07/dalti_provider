@@ -2,7 +2,9 @@
 
 ## 📁 Recommended Folder Structure
 
-Based on **2025 React Native best practices** and clean architecture principles, here's the recommended project structure for the Dalti Provider React Native application using the latest 2025 technologies and patterns:
+Based on **2025 React Native best practices** and clean architecture principles, here's the
+recommended project structure for the Dalti Provider React Native application using the latest 2025
+technologies and patterns:
 
 ```
 dalti-provider-rn/
@@ -222,12 +224,14 @@ constants/
 ## 🎯 Architecture Principles
 
 ### 1. Feature-Based Organization
+
 - Each feature is self-contained
 - Clear separation of concerns
 - Easy to scale and maintain
 - Facilitates team collaboration
 
 ### 2. Clean Architecture Layers
+
 ```
 Presentation Layer (Screens/Components)
     ↓
@@ -237,11 +241,13 @@ Data Layer (Services/API)
 ```
 
 ### 3. Dependency Flow
+
 - Higher-level modules don't depend on lower-level modules
 - Both depend on abstractions
 - Abstractions don't depend on details
 
 ### 4. File Naming Conventions
+
 - **Components**: PascalCase (e.g., `LoginForm.tsx`)
 - **Hooks**: camelCase with "use" prefix (e.g., `useAuth.ts`)
 - **Services**: camelCase (e.g., `authService.ts`)
@@ -249,6 +255,7 @@ Data Layer (Services/API)
 - **Constants**: camelCase (e.g., `apiConstants.ts`)
 
 ### 5. Import/Export Patterns
+
 ```typescript
 // Feature index.ts - barrel exports
 export { LoginScreen } from './screens/LoginScreen';
@@ -264,6 +271,7 @@ export type { ButtonProps } from './Button.types';
 ## 📱 Component Structure Example
 
 ### Button Component Structure
+
 ```
 Button/
 ├── Button.tsx             # Main component
@@ -274,6 +282,7 @@ Button/
 ```
 
 ### Button Implementation
+
 ```typescript
 // Button.types.ts
 export interface ButtonProps {
@@ -320,6 +329,7 @@ export type { ButtonProps } from './Button.types';
 ## 🔧 Configuration Files
 
 ### Package.json Scripts (2025 Optimized)
+
 ```json
 {
   "scripts": {
@@ -341,4 +351,6 @@ export type { ButtonProps } from './Button.types';
 }
 ```
 
-This structure provides a solid foundation for building a scalable, maintainable React Native application while following **2025 industry best practices** and clean architecture principles with the latest technology stack.
+This structure provides a solid foundation for building a scalable, maintainable React Native
+application while following **2025 industry best practices** and clean architecture principles with
+the latest technology stack.
