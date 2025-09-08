@@ -3,9 +3,12 @@
 ## 🏗️ Current Flutter Architecture
 
 ### Riverpod State Management
-The current Flutter application uses **Riverpod 2.6.1** as the primary state management solution with code generation for type safety and performance.
+
+The current Flutter application uses **Riverpod 2.6.1** as the primary state management solution
+with code generation for type safety and performance.
 
 #### Provider Types Used
+
 1. **StateNotifierProvider** - For complex state management
 2. **FutureProvider** - For async data fetching
 3. **StreamProvider** - For real-time data streams
@@ -15,6 +18,7 @@ The current Flutter application uses **Riverpod 2.6.1** as the primary state man
 ### Architecture Patterns
 
 #### Repository Pattern
+
 ```dart
 // Example: Location Repository
 abstract class LocationRepository {
@@ -32,6 +36,7 @@ class LocationRepositoryImpl implements LocationRepository {
 ```
 
 #### Provider Pattern with Code Generation
+
 ```dart
 @riverpod
 class LocationNotifier extends _$LocationNotifier {
@@ -60,6 +65,7 @@ class LocationNotifier extends _$LocationNotifier {
 ```
 
 #### Data Models with Freezed
+
 ```dart
 @freezed
 class Location with _$Location {
@@ -82,6 +88,7 @@ class Location with _$Location {
 ## 🔄 Data Flow Architecture
 
 ### Request Flow
+
 1. **UI Component** triggers action
 2. **Provider/Notifier** handles business logic
 3. **Repository** abstracts data source
@@ -90,6 +97,7 @@ class Location with _$Location {
 6. **UI** updates reactively
 
 ### State Structure
+
 ```dart
 @freezed
 class LocationData with _$LocationData {
@@ -113,6 +121,7 @@ enum LocationState {
 ## 🌐 API Integration Patterns
 
 ### HTTP Client Configuration
+
 - **Base Client**: Dio with interceptors
 - **Authentication**: JWT token interceptor
 - **Logging**: Request/response logging
@@ -120,6 +129,7 @@ enum LocationState {
 - **Retry Logic**: Automatic retry for failed requests
 
 ### API Service Pattern
+
 ```dart
 class LocationApiService extends ApiService {
   LocationApiService(super.httpClient);
@@ -135,7 +145,7 @@ class LocationApiService extends ApiService {
         if (search != null) 'search': search,
       },
     );
-    
+
     return (response.data as List)
         .map((json) => Location.fromJson(json))
         .toList();
@@ -146,12 +156,14 @@ class LocationApiService extends ApiService {
 ## 🔄 Real-time Data Management
 
 ### WebSocket Integration
+
 - **Service**: WebSocketService for Socket.IO connection
 - **Providers**: Real-time data stream providers
 - **State Sync**: Automatic state synchronization
 - **Reconnection**: Automatic reconnection handling
 
 ### Stream Providers
+
 ```dart
 @riverpod
 Stream<List<Message>> realtimeMessages(RealtimeMessagesRef ref) {
@@ -163,12 +175,14 @@ Stream<List<Message>> realtimeMessages(RealtimeMessagesRef ref) {
 ## 💾 Local Storage Strategy
 
 ### Storage Services
+
 1. **Hive** - Primary NoSQL database for complex data
 2. **SharedPreferences** - Simple key-value storage
 3. **SecureStorage** - Encrypted storage for sensitive data
 4. **WebStorageService** - Web-specific storage handling
 
 ### Caching Strategy
+
 - **API Response Caching** - Automatic response caching
 - **Offline Support** - Local data persistence
 - **Cache Invalidation** - Smart cache refresh logic
@@ -177,6 +191,7 @@ Stream<List<Message>> realtimeMessages(RealtimeMessagesRef ref) {
 ## 🔐 Authentication State Management
 
 ### JWT Token Management
+
 ```dart
 @riverpod
 class AuthNotifier extends _$AuthNotifier {
@@ -188,19 +203,19 @@ class AuthNotifier extends _$AuthNotifier {
   Future<bool> login(LoginRequest request) async {
     try {
       state = state.copyWith(state: AuthState.loading);
-      
+
       final repository = ref.read(authRepositoryProvider);
       final response = await repository.login(request);
-      
+
       // Store tokens securely
       await _storeTokens(response.tokens);
-      
+
       state = state.copyWith(
         state: AuthState.authenticated,
         user: response.user,
         tokens: response.tokens,
       );
-      
+
       return true;
     } catch (error) {
       state = state.copyWith(
@@ -216,12 +231,14 @@ class AuthNotifier extends _$AuthNotifier {
 ## 📱 UI State Management
 
 ### Form State Management
+
 - **Form Controllers** - Text input management
 - **Validation State** - Real-time form validation
 - **Submission State** - Loading and error states
 - **Auto-save** - Automatic form data persistence
 
 ### Navigation State
+
 - **GoRouter** - Declarative routing
 - **Route Guards** - Authentication-based navigation
 - **Deep Linking** - URL-based navigation
@@ -230,21 +247,24 @@ class AuthNotifier extends _$AuthNotifier {
 ## 🎯 React Native Migration Strategy (2025 Latest)
 
 ### Recommended State Management Stack (2025 Versions)
+
 1. **Zustand 5.x** - Latest lightweight state management (2025)
 2. **TanStack Query v5** - Advanced server state management (2025)
 3. **React Hook Form 7.x** - Latest form state management (2025)
 4. **React Navigation 7.x** - Modern navigation state (2025)
 
 ### Migration Mapping (2025 Technologies)
-| Flutter (Riverpod) | React Native 2025 Equivalent |
-|-------------------|------------------------------|
-| StateNotifierProvider | Zustand 5.x store |
-| FutureProvider | TanStack Query v5 useQuery |
-| StreamProvider | TanStack Query v5 useQuery with polling |
-| Provider | React Context (18.x) |
-| StateProvider | useState/Zustand 5.x |
+
+| Flutter (Riverpod)    | React Native 2025 Equivalent            |
+| --------------------- | --------------------------------------- |
+| StateNotifierProvider | Zustand 5.x store                       |
+| FutureProvider        | TanStack Query v5 useQuery              |
+| StreamProvider        | TanStack Query v5 useQuery with polling |
+| Provider              | React Context (18.x)                    |
+| StateProvider         | useState/Zustand 5.x                    |
 
 ### Proposed Architecture
+
 ```typescript
 // Zustand Store Example
 interface LocationStore {
@@ -252,7 +272,7 @@ interface LocationStore {
   selectedLocation: Location | null;
   isLoading: boolean;
   error: string | null;
-  
+
   loadLocations: () => Promise<void>;
   selectLocation: (location: Location) => void;
   createLocation: (request: CreateLocationRequest) => Promise<void>;
@@ -263,7 +283,7 @@ const useLocationStore = create<LocationStore>((set, get) => ({
   selectedLocation: null,
   isLoading: false,
   error: null,
-  
+
   loadLocations: async () => {
     set({ isLoading: true, error: null });
     try {
@@ -273,12 +293,13 @@ const useLocationStore = create<LocationStore>((set, get) => ({
       set({ error: error.message, isLoading: false });
     }
   },
-  
+
   // Other methods...
 }));
 ```
 
 ### React Query Integration
+
 ```typescript
 // Server State Management
 const useLocations = () => {
@@ -292,7 +313,7 @@ const useLocations = () => {
 
 const useCreateLocation = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: locationApi.createLocation,
     onSuccess: () => {
@@ -302,4 +323,5 @@ const useCreateLocation = () => {
 };
 ```
 
-This analysis provides the foundation for migrating the current Riverpod-based state management to a React Native architecture while maintaining the same data flow patterns and business logic.
+This analysis provides the foundation for migrating the current Riverpod-based state management to a
+React Native architecture while maintaining the same data flow patterns and business logic.

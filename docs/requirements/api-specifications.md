@@ -3,16 +3,20 @@
 ## 🌐 Base Configuration
 
 ### Server URLs
+
 - **Production**: `https://dapi.adscloud.org`
 - **Development**: `https://dapi-test.adscloud.org:8443`
 
 ### Authentication
+
 - **Type**: Bearer Token (JWT)
 - **Header**: `Authorization: Bearer {sessionId}`
 - **Content-Type**: `application/json`
 
 ### Response Format
+
 All API responses follow this standard format:
+
 ```json
 {
   "success": boolean,
@@ -25,6 +29,7 @@ All API responses follow this standard format:
 ## 🔐 Authentication Endpoints
 
 ### 1. Get Provider Categories
+
 **GET** `/api/auth/provider/categories`
 
 **Description**: Fetch all available provider categories in hierarchical structure
@@ -32,6 +37,7 @@ All API responses follow this standard format:
 **Request**: No body required
 
 **Response** (200 OK):
+
 ```json
 [
   {
@@ -48,16 +54,19 @@ All API responses follow this standard format:
 ```
 
 **Notes**:
+
 - Returns 15 parent categories (parentId: null)
 - Returns 66 child categories (parentId: parent category ID)
 - Some API responses may have empty titles - app uses fallback categories
 
 ### 2. Request Email OTP
+
 **POST** `/api/auth/request-email-otp`
 
 **Description**: Request OTP for provider registration
 
 **Request Body**:
+
 ```json
 {
   "email": "provider@example.com",
@@ -72,6 +81,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -80,11 +90,13 @@ All API responses follow this standard format:
 ```
 
 ### 3. Complete Provider Registration
+
 **POST** `/api/auth/provider/verify-otp-register`
 
 **Description**: Complete provider registration with OTP verification
 
 **Request Body**:
+
 ```json
 {
   "otp": "123456",
@@ -100,6 +112,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (201 Created):
+
 ```json
 {
   "message": "Provider registered successfully",
@@ -123,11 +136,13 @@ All API responses follow this standard format:
 ```
 
 ### 4. Provider Login
+
 **POST** `/api/auth/provider/login`
 
 **Description**: Authenticate provider and get session token
 
 **Request Body**:
+
 ```json
 {
   "identifier": "provider@example.com",
@@ -136,6 +151,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (200 OK):
+
 ```json
 {
   "sessionId": "gfpyz37dllbkyc5n6s2fl7oiqm5upfcxgii65lla",
@@ -162,11 +178,13 @@ All API responses follow this standard format:
 ```
 
 ### 5. Refresh Token
+
 **POST** `/api/auth/refresh-token`
 
 **Description**: Refresh expired session token
 
 **Request Body**:
+
 ```json
 {
   "refreshToken": "refresh_token_here"
@@ -174,6 +192,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -186,6 +205,7 @@ All API responses follow this standard format:
 ```
 
 ### 6. Logout
+
 **POST** `/api/auth/logout`
 
 **Description**: Invalidate current session
@@ -193,6 +213,7 @@ All API responses follow this standard format:
 **Request**: No body required (uses Authorization header)
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -203,15 +224,18 @@ All API responses follow this standard format:
 ## 🏢 Location Management
 
 ### 1. Get Locations
+
 **GET** `/api/auth/providers/locations`
 
 **Description**: Get all locations for the authenticated provider
 
 **Query Parameters**:
+
 - `isActive` (boolean, optional): Filter by active status
 - `search` (string, optional): Search by location name
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -233,11 +257,13 @@ All API responses follow this standard format:
 **Note**: Response does NOT include `isActive`, `description`, or `coordinates`
 
 ### 2. Create Location
+
 **POST** `/api/auth/providers/locations`
 
 **Description**: Create a new location
 
 **Request Body**:
+
 ```json
 {
   "name": "New Clinic",
@@ -254,6 +280,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (201 Created):
+
 ```json
 {
   "success": true,
@@ -272,6 +299,7 @@ All API responses follow this standard format:
 ```
 
 ### 3. Update Location
+
 **PUT** `/api/auth/providers/locations/{id}`
 
 **Description**: Update an existing location
@@ -279,6 +307,7 @@ All API responses follow this standard format:
 **Request Body**: Same as create location
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -297,11 +326,13 @@ All API responses follow this standard format:
 ```
 
 ### 4. Delete Location
+
 **DELETE** `/api/auth/providers/locations/{id}`
 
 **Description**: Delete a location
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -310,6 +341,7 @@ All API responses follow this standard format:
 ```
 
 **Error** (500 Internal Server Error - if location has dependencies):
+
 ```json
 {
   "success": false,
@@ -320,15 +352,18 @@ All API responses follow this standard format:
 ## 🛠️ Service Management
 
 ### 1. Get Services
+
 **GET** `/api/auth/providers/services`
 
 **Description**: Get all services for the authenticated provider
 
 **Query Parameters**:
+
 - `isActive` (boolean, optional): Filter by active status
 - `categoryId` (integer, optional): Filter by category
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -350,17 +385,19 @@ All API responses follow this standard format:
 **Note**: Response does NOT include `description`, `price`, `isActive`, or `categoryId`
 
 ### 2. Create Service
+
 **POST** `/api/auth/providers/services`
 
 **Description**: Create a new service
 
 **Request Body**:
+
 ```json
 {
   "title": "Dental Cleaning",
   "description": "Professional dental cleaning service",
   "duration": 45,
-  "price": 150.00,
+  "price": 150.0,
   "categoryId": 16,
   "color": "#FFE66D",
   "acceptOnline": true,
@@ -370,6 +407,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (201 Created):
+
 ```json
 {
   "success": true,
@@ -388,6 +426,7 @@ All API responses follow this standard format:
 ```
 
 ### 3. Update Service
+
 **PUT** `/api/auth/providers/services/{id}`
 
 **Description**: Update an existing service
@@ -395,6 +434,7 @@ All API responses follow this standard format:
 **Request Body**: Same as create service
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -413,11 +453,13 @@ All API responses follow this standard format:
 ```
 
 ### 4. Delete Service
+
 **DELETE** `/api/auth/providers/services/{id}`
 
 **Description**: Delete a service
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -428,15 +470,18 @@ All API responses follow this standard format:
 ## 🗂️ Queue Management
 
 ### 1. Get Queues
+
 **GET** `/api/auth/providers/queues`
 
 **Description**: Get all queues for the authenticated provider
 
 **Query Parameters**:
+
 - `isActive` (boolean, optional): Filter by active status
 - `locationId` (integer, optional): Filter by location
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -455,11 +500,13 @@ All API responses follow this standard format:
 ```
 
 ### 2. Create Queue
+
 **POST** `/api/auth/providers/queues`
 
 **Description**: Create a new queue
 
 **Request Body**:
+
 ```json
 {
   "title": "Emergency Queue",
@@ -471,6 +518,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (201 Created):
+
 ```json
 {
   "success": true,
@@ -488,6 +536,7 @@ All API responses follow this standard format:
 ```
 
 ### 3. Update Queue
+
 **PUT** `/api/auth/providers/queues/{id}`
 
 **Description**: Update an existing queue
@@ -495,6 +544,7 @@ All API responses follow this standard format:
 **Request Body**: Same as create queue
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -512,11 +562,13 @@ All API responses follow this standard format:
 ```
 
 ### 4. Delete Queue
+
 **DELETE** `/api/auth/providers/queues/{id}`
 
 **Description**: Delete a queue
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -525,6 +577,7 @@ All API responses follow this standard format:
 ```
 
 **Error** (500 Internal Server Error - if queue has future appointments):
+
 ```json
 {
   "success": false,
@@ -535,11 +588,13 @@ All API responses follow this standard format:
 ## 📅 Appointment Management
 
 ### 1. Get Appointments
+
 **GET** `/api/auth/providers/appointments`
 
 **Description**: Get appointments for the authenticated provider
 
 **Query Parameters**:
+
 - `startDate` (string, ISO date): Filter appointments from date
 - `endDate` (string, ISO date): Filter appointments to date
 - `status` (string): Filter by status (scheduled, in-progress, completed, cancelled)
@@ -548,6 +603,7 @@ All API responses follow this standard format:
 - `pageSize` (integer): Number of items per page
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -586,11 +642,13 @@ All API responses follow this standard format:
 ```
 
 ### 2. Create Appointment
+
 **POST** `/api/auth/providers/appointments`
 
 **Description**: Create a new appointment
 
 **Request Body**:
+
 ```json
 {
   "customerUserId": "f63f6d7f-4fde-46d8-98f6-b35209418f5f",
@@ -604,6 +662,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (201 Created):
+
 ```json
 {
   "success": true,
@@ -623,6 +682,7 @@ All API responses follow this standard format:
 ```
 
 ### 3. Update Appointment
+
 **PUT** `/api/auth/providers/appointments/{id}`
 
 **Description**: Update an existing appointment
@@ -630,6 +690,7 @@ All API responses follow this standard format:
 **Request Body**: Same as create appointment
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -649,11 +710,13 @@ All API responses follow this standard format:
 ```
 
 ### 4. Cancel Appointment
+
 **PUT** `/api/auth/providers/appointments/{id}/cancel`
 
 **Description**: Cancel an appointment
 
 **Request Body**:
+
 ```json
 {
   "reason": "Patient requested cancellation"
@@ -661,6 +724,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -674,17 +738,20 @@ All API responses follow this standard format:
 ```
 
 ### 5. Get Calendar View
+
 **GET** `/api/auth/providers/appointments/calendar`
 
 **Description**: Get appointments in calendar format
 
 **Query Parameters**:
+
 - `month` (integer): Month (1-12)
 - `year` (integer): Year
 - `locationId` (integer, optional): Filter by location
 
 **Response** (200 OK):
-```json
+
+````json
 {
   "success": true,
   "data": {
@@ -743,14 +810,16 @@ All API responses follow this standard format:
     }
   }
 }
-```
+````
 
 ### 2. Create Customer
+
 **POST** `/api/auth/providers/customers`
 
 **Description**: Create a new customer
 
 **Request Body**:
+
 ```json
 {
   "firstName": "Jane",
@@ -766,6 +835,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (201 Created):
+
 ```json
 {
   "success": true,
@@ -788,6 +858,7 @@ All API responses follow this standard format:
 ```
 
 ### 3. Update Customer
+
 **PUT** `/api/auth/providers/customers/{id}`
 
 **Description**: Update an existing customer
@@ -795,6 +866,7 @@ All API responses follow this standard format:
 **Request Body**: Same as create customer
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -817,12 +889,14 @@ All API responses follow this standard format:
 ```
 
 ### 4. Get Customer Details
+
 **GET** `/api/auth/providers/customers/{id}`
 
 **Description**: Get detailed information about a specific customer
 
 **Response** (200 OK):
-```json
+
+````json
 {
   "success": true,
   "data": {
@@ -885,18 +959,21 @@ All API responses follow this standard format:
     }
   }
 }
-```
+````
 
 ### 2. Get Messages
+
 **GET** `/api/auth/mobile/conversations/{conversationId}/messages`
 
 **Description**: Get messages for a specific conversation
 
 **Query Parameters**:
+
 - `page` (integer): Page number for pagination
 - `pageSize` (integer): Number of items per page
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -934,11 +1011,13 @@ All API responses follow this standard format:
 ```
 
 ### 3. Send Message
+
 **POST** `/api/auth/mobile/conversations/{conversationId}/messages`
 
 **Description**: Send a message in a conversation
 
 **Request Body**:
+
 ```json
 {
   "content": "Your appointment is confirmed for tomorrow at 10 AM",
@@ -947,6 +1026,7 @@ All API responses follow this standard format:
 ```
 
 **Response** (201 Created):
+
 ```json
 {
   "success": true,
@@ -967,17 +1047,20 @@ All API responses follow this standard format:
 ## 🔔 Notification Management
 
 ### 1. Get Notifications
+
 **GET** `/api/auth/notifications`
 
 **Description**: Get notifications for the authenticated provider
 
 **Query Parameters**:
+
 - `isRead` (boolean, optional): Filter by read status
 - `type` (string, optional): Filter by notification type
 - `page` (integer): Page number for pagination
 - `pageSize` (integer): Number of items per page
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -1007,11 +1090,13 @@ All API responses follow this standard format:
 ```
 
 ### 2. Mark Notification as Read
+
 **PUT** `/api/auth/notifications/{id}/read`
 
 **Description**: Mark a notification as read
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -1020,12 +1105,14 @@ All API responses follow this standard format:
 ```
 
 ### 3. Mark All Notifications as Read
+
 **PUT** `/api/auth/notifications/read-all`
 
 **Description**: Mark all notifications as read
 
 **Response** (200 OK):
-```json
+
+````json
 {
   "success": true,
   "message": "All notifications marked as read"
@@ -1059,14 +1146,16 @@ All API responses follow this standard format:
     }
   }
 }
-```
+````
 
 ### 2. Get Today's Schedule
+
 **GET** `/api/provider/dashboard/schedule/today`
 
 **Description**: Get today's schedule and queue status
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -1100,16 +1189,18 @@ All API responses follow this standard format:
 ```
 
 ### 3. Get Quick Stats
+
 **GET** `/api/provider/dashboard/quick-stats`
 
 **Description**: Get real-time counters and quick statistics
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
   "data": {
-    "todayRevenue": 1250.00,
+    "todayRevenue": 1250.0,
     "todayAppointments": 12,
     "waitingCustomers": 5,
     "activeQueues": 3,
@@ -1126,6 +1217,7 @@ All API responses follow this standard format:
 ### Common Error Codes
 
 #### 400 Bad Request
+
 ```json
 {
   "success": false,
@@ -1138,6 +1230,7 @@ All API responses follow this standard format:
 ```
 
 #### 401 Unauthorized
+
 ```json
 {
   "success": false,
@@ -1146,6 +1239,7 @@ All API responses follow this standard format:
 ```
 
 #### 403 Forbidden
+
 ```json
 {
   "success": false,
@@ -1154,6 +1248,7 @@ All API responses follow this standard format:
 ```
 
 #### 404 Not Found
+
 ```json
 {
   "success": false,
@@ -1162,6 +1257,7 @@ All API responses follow this standard format:
 ```
 
 #### 422 Unprocessable Entity
+
 ```json
 {
   "success": false,
@@ -1173,6 +1269,7 @@ All API responses follow this standard format:
 ```
 
 #### 500 Internal Server Error
+
 ```json
 {
   "success": false,
@@ -1183,6 +1280,7 @@ All API responses follow this standard format:
 ## 🔧 API Behavior Notes
 
 ### Important Considerations
+
 1. **Status Codes**: Validation errors may return 500 instead of 400
 2. **Authentication**: Some auth errors return 400 instead of 401
 3. **Foreign Keys**: Constraint violations return 500 status codes
@@ -1190,15 +1288,23 @@ All API responses follow this standard format:
 5. **Required Fields**: Always check current API behavior for required fields
 
 ### Rate Limiting
+
 - **Limit**: 1000 requests per hour per authenticated user
 - **Headers**: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
 
 ### Pagination
+
 - **Default Page Size**: 20 items
 - **Maximum Page Size**: 100 items
 - **Response Format**: Includes `pagination` object with `page`, `pageSize`, `total`, `totalPages`
 
-This comprehensive API specification provides all the endpoints, request/response formats, and implementation details needed for the React Native migration.
+This comprehensive API specification provides all the endpoints, request/response formats, and
+implementation details needed for the React Native migration.
+
 ```
+
 ```
+
+```
+
 ```

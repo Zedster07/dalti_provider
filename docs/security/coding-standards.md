@@ -3,6 +3,7 @@
 ## 📝 TypeScript Standards (2025 Latest)
 
 ### Type Safety Requirements (TypeScript 5.x)
+
 ```typescript
 // ✅ Always use explicit types with 2025 TypeScript features
 interface UserProfile {
@@ -34,6 +35,7 @@ const userData: UserProfile = response.data; // Good
 ```
 
 ### Naming Conventions
+
 ```typescript
 // Components: PascalCase
 export const LoginForm: React.FC<LoginFormProps> = () => {};
@@ -65,6 +67,7 @@ enum UserRole {
 ## 🏗️ Component Standards
 
 ### Component Structure
+
 ```typescript
 // Component file structure
 interface ComponentProps {
@@ -83,19 +86,19 @@ export const Component: React.FC<ComponentProps> = ({
   // Hooks at the top
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
-  
+
   // Event handlers
   const handlePress = useCallback(() => {
     if (onPress && !disabled) {
       onPress();
     }
   }, [onPress, disabled]);
-  
+
   // Early returns
   if (!user) {
     return <LoginPrompt />;
   }
-  
+
   // Main render
   return (
     <TouchableOpacity onPress={handlePress} disabled={disabled}>
@@ -106,13 +109,14 @@ export const Component: React.FC<ComponentProps> = ({
 ```
 
 ### Hook Standards
+
 ```typescript
 // Custom hook structure
 export const useApiData = <T>(endpoint: string) => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
@@ -125,11 +129,11 @@ export const useApiData = <T>(endpoint: string) => {
       setLoading(false);
     }
   }, [endpoint]);
-  
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-  
+
   return { data, loading, error, refetch: fetchData };
 };
 ```
@@ -137,6 +141,7 @@ export const useApiData = <T>(endpoint: string) => {
 ## 🎨 Styling Standards
 
 ### Styled Components Pattern
+
 ```typescript
 import styled from 'styled-components/native';
 
@@ -150,16 +155,15 @@ export const Container = styled.View`
 // Conditional styling
 export const Button = styled.TouchableOpacity<{ variant: 'primary' | 'secondary' }>`
   padding: ${({ theme }) => theme.spacing.md}px ${({ theme }) => theme.spacing.xl}px;
-  background-color: ${({ theme, variant }) => 
-    variant === 'primary' ? theme.colors.primary : 'transparent'
-  };
-  border: ${({ theme, variant }) => 
-    variant === 'secondary' ? `1px solid ${theme.colors.primary}` : 'none'
-  };
+  background-color: ${({ theme, variant }) =>
+    variant === 'primary' ? theme.colors.primary : 'transparent'};
+  border: ${({ theme, variant }) =>
+    variant === 'secondary' ? `1px solid ${theme.colors.primary}` : 'none'};
 `;
 ```
 
 ### StyleSheet Pattern (Alternative)
+
 ```typescript
 import { StyleSheet } from 'react-native';
 import { theme } from '../constants/theme';
@@ -188,6 +192,7 @@ export const styles = StyleSheet.create({
 ## 🔄 State Management Standards
 
 ### Zustand Store Pattern
+
 ```typescript
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -213,26 +218,26 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       isAuthenticated: false,
       loading: false,
       error: null,
-      
+
       // Actions
-      login: async (credentials) => {
+      login: async credentials => {
         try {
           set({ loading: true, error: null });
           const user = await authService.login(credentials);
           set({ user, isAuthenticated: true, loading: false });
         } catch (error) {
-          set({ 
+          set({
             error: error instanceof Error ? error.message : 'Login failed',
-            loading: false 
+            loading: false,
           });
         }
       },
-      
+
       logout: () => {
         authService.logout();
         set({ user: null, isAuthenticated: false, error: null });
       },
-      
+
       clearError: () => set({ error: null }),
     }),
     { name: 'auth-store' }
@@ -241,6 +246,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 ```
 
 ### React Query Pattern
+
 ```typescript
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -256,13 +262,13 @@ export const useLocations = () => {
 // Mutation hook
 export const useCreateLocation = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: locationService.createLocation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['locations'] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Failed to create location:', error);
     },
   });
@@ -272,36 +278,37 @@ export const useCreateLocation = () => {
 ## 🧪 Testing Standards
 
 ### Unit Testing
+
 ```typescript
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { LoginForm } from '../LoginForm';
 
 describe('LoginForm', () => {
   const mockOnSubmit = jest.fn();
-  
+
   beforeEach(() => {
     mockOnSubmit.mockClear();
   });
-  
+
   it('should render login form correctly', () => {
     const { getByPlaceholderText, getByText } = render(
       <LoginForm onSubmit={mockOnSubmit} />
     );
-    
+
     expect(getByPlaceholderText('Email')).toBeTruthy();
     expect(getByPlaceholderText('Password')).toBeTruthy();
     expect(getByText('Login')).toBeTruthy();
   });
-  
+
   it('should call onSubmit with correct data', async () => {
     const { getByPlaceholderText, getByText } = render(
       <LoginForm onSubmit={mockOnSubmit} />
     );
-    
+
     fireEvent.changeText(getByPlaceholderText('Email'), 'test@example.com');
     fireEvent.changeText(getByPlaceholderText('Password'), 'password123');
     fireEvent.press(getByText('Login'));
-    
+
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
         email: 'test@example.com',
@@ -313,6 +320,7 @@ describe('LoginForm', () => {
 ```
 
 ### Integration Testing
+
 ```typescript
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useAuth } from '../useAuth';
@@ -320,14 +328,14 @@ import { useAuth } from '../useAuth';
 describe('useAuth', () => {
   it('should login successfully', async () => {
     const { result } = renderHook(() => useAuth());
-    
+
     await act(async () => {
       await result.current.login({
         email: 'test@example.com',
         password: 'password123',
       });
     });
-    
+
     expect(result.current.isAuthenticated).toBe(true);
     expect(result.current.user).toBeDefined();
   });
@@ -337,6 +345,7 @@ describe('useAuth', () => {
 ## 📋 Code Quality Standards
 
 ### ESLint Configuration (2025 Latest)
+
 ```json
 {
   "extends": [
@@ -359,6 +368,7 @@ describe('useAuth', () => {
 ```
 
 ### Prettier Configuration
+
 ```json
 {
   "semi": true,
@@ -371,6 +381,7 @@ describe('useAuth', () => {
 ```
 
 ### Husky Pre-commit Hooks
+
 ```json
 {
   "husky": {
@@ -380,11 +391,7 @@ describe('useAuth', () => {
     }
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write",
-      "git add"
-    ]
+    "*.{ts,tsx}": ["eslint --fix", "prettier --write", "git add"]
   }
 }
 ```
@@ -392,6 +399,7 @@ describe('useAuth', () => {
 ## 🚀 Performance Standards
 
 ### Optimization Guidelines
+
 ```typescript
 // ✅ Use React.memo for expensive components
 export const ExpensiveComponent = React.memo<Props>(({ data }) => {
@@ -413,6 +421,7 @@ const LazyScreen = lazy(() => import('./screens/LazyScreen'));
 ```
 
 ### Bundle Optimization
+
 ```typescript
 // ✅ Use dynamic imports for large libraries
 const loadHeavyLibrary = async () => {
@@ -428,10 +437,11 @@ import _ from 'lodash'; // Avoid
 ## 📚 Documentation Standards
 
 ### Component Documentation
-```typescript
+
+````typescript
 /**
  * Primary button component for user interactions
- * 
+ *
  * @example
  * ```tsx
  * <Button
@@ -452,9 +462,10 @@ export interface ButtonProps {
   /** Disabled state */
   disabled?: boolean;
 }
-```
+````
 
 ### API Documentation
+
 ```typescript
 /**
  * Authentication service for user login/logout
@@ -472,4 +483,6 @@ export class AuthService {
 }
 ```
 
-This comprehensive coding standards document ensures consistent, maintainable, and high-quality code throughout the React Native application development process using **2025's latest best practices and technologies**.
+This comprehensive coding standards document ensures consistent, maintainable, and high-quality code
+throughout the React Native application development process using **2025's latest best practices and
+technologies**.
